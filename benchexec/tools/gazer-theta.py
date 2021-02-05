@@ -31,7 +31,7 @@ class Tool(benchexec.tools.template.BaseTool2):
     def cmdline(self, executable, options, task, rlimits):
         # All of the flags should be added through the benchmark definition
         # (see Gazer docs on Portfolio and Benchexec)
-        return [executable] + options + "-t" + [task.single_input_file]
+        return [executable] + options + ["-t"] + [task.single_input_file]
 
     def determine_result(self, run):
         status = result.RESULT_UNKNOWN
