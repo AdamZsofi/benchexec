@@ -20,7 +20,7 @@ class Tool(benchexec.tools.template.BaseTool2):
     REQUIRED_PATHS = [".."]
 
     def executable(self, tool_locator):
-        return tool_locator.find_executable("gazer_starter.py", subdir="scripts")
+        return tool_locator.find_executable("Portfolio.pl", subdir="scripts/portfolio")
 
     def name(self):
         return "gazer-theta"
@@ -29,15 +29,16 @@ class Tool(benchexec.tools.template.BaseTool2):
         return self._version_from_tool(executable)
 
     def cmdline(self, executable, options, task, rlimits):
-        # possible option: --output (default value if flag isn't used: working directory)
+        # All of the flags should be added through the benchmark definition
+        # (see Gazer docs on Portfolio and Benchexec)
         return [executable] + options + [task.single_input_file]
 
     def determine_result(self, run):
         status = result.RESULT_UNKNOWN
         for line in run.output:
-            if "Result of gazer-theta run: FALSE" in line:
+            if "Final result of portfolio: Verification FAILED" in line:
                 status = result.RESULT_FALSE_REACH
-            elif "Result of gazer-theta run: TRUE" in line:
+            elif "Final result of portfolio: Verification SUCCESSFUL" in line:
                 status = result.RESULT_TRUE_PROP
 
         if (
